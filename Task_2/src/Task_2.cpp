@@ -3,6 +3,10 @@
 #include <string>
 #include <windows.h>  // для LoadLibrary, GetProcAddress, FreeLibrary
 
+// Объявляем указатели на функции как глобальные переменные
+typedef double(__stdcall* RecFunc)(double[], int, int);
+RecFunc recFunc = nullptr;
+
 void checkInputChoice(int& choice) {
     while (true) {
         std::cout << "Start?\n1.YES\n2.EXIT\n3.Show menu\n";
@@ -60,7 +64,7 @@ void checkInputIntK(int& k){
 void Task() {
     // 1. ЗАГРУЖАЕМ ДИНАМИЧЕСКУЮ БИБЛИОТЕКУ
     HINSTANCE hDLL = LoadLibrary("RecDLL.dll");
-    if (hDLL == NULL) {
+    if (hDLL == nullptr) {
         std::cout << "Ошибка: не удалось загрузить RecDLL.dll!" << std::endl;
         return;
     }
@@ -70,10 +74,10 @@ void Task() {
     typedef double (__stdcall *RecFunc)(double[], int, int);
 
     // 3. ПОЛУЧАЕМ УКАЗАТЕЛИ НА ФУНКЦИИ ИЗ DLL
-    RecFunc recFunc = (RecFunc)GetProcAddress(hDLL, "recFunc");
+    auto recFunc = reinterpret_cast<RecFunc>(GetProcAddress(hDLL, "recFunc"));
 
     // Проверяем, что все функции найдены
-    if (recFunc == NULL) {
+    if (recFunc == nullptr) {
         std::cout << "Ошибка: не удалось найти функции в библиотеке!" << std::endl;
         FreeLibrary(hDLL);
         return;
@@ -93,6 +97,7 @@ void Task() {
 
 void Menu() {
     std::cout << "\tTask 5\n";
+    std::cout << "\tVariant 9\n";
     std::cout << "С помощью рекусивной функции вычисляется произведение\n"
                  "для заданного количества множителей по формуле\n"
                  "sinCi - cosCi\n" << std::endl;

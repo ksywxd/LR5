@@ -8,10 +8,6 @@ typedef int(__stdcall* CountFunc)(int**, int, int);
 typedef void(__stdcall* FillFunc)(int**, int*, int, int);
 typedef double(__stdcall* AverageFunc)(int*, int);
 
-CountFunc countEvenColumnOddNumber = nullptr;
-FillFunc fillOut = nullptr;
-AverageFunc findAverage = nullptr;
-
 void checkInputChoice(int& choice) {
     while (true) {
         std::cout << "Start?\n1.YES\n2.EXIT\n3.Show menu\n";
@@ -147,7 +143,7 @@ void freeArr(int** arr, int m) {
 void Task() {
     // 1. ЗАГРУЖАЕМ ДИНАМИЧЕСКУЮ БИБЛИОТЕКУ
     HINSTANCE hDLL = LoadLibrary("MatrixDLL.dll");
-    if (hDLL == NULL) {
+    if (hDLL == nullptr) {
         std::cout << "Ошибка: не удалось загрузить MatrixDLL.dll!" << std::endl;
         return;
     }
@@ -163,12 +159,12 @@ void Task() {
     typedef double (__stdcall *AverageFunc)(int*, int);
 
     // 3. ПОЛУЧАЕМ УКАЗАТЕЛИ НА ФУНКЦИИ ИЗ DLL
-    CountFunc countEvenColumnOddNumber = (CountFunc)GetProcAddress(hDLL, "countEvenColumnOddNumber");
-    FillFunc fillOut = (FillFunc)GetProcAddress(hDLL, "fillOut");
-    AverageFunc findAverage = (AverageFunc)GetProcAddress(hDLL, "findAverage");
+    auto countEvenColumnOddNumber = reinterpret_cast<CountFunc>(GetProcAddress(hDLL, "countEvenColumnOddNumber"));
+    auto fillOut = reinterpret_cast<FillFunc>(GetProcAddress(hDLL, "fillOut"));
+    auto findAverage = reinterpret_cast<AverageFunc>(GetProcAddress(hDLL, "findAverage"));
 
     // Проверяем, что все функции найдены
-    if (countEvenColumnOddNumber == NULL || fillOut == NULL || findAverage == NULL) {
+    if (countEvenColumnOddNumber == nullptr || fillOut == nullptr || findAverage == nullptr) {
         std::cout << "Ошибка: не удалось найти функции в библиотеке!" << std::endl;
         FreeLibrary(hDLL);
         return;
