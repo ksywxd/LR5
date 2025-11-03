@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
     // Экспортируем функции из DLL
-    __declspec(dllexport) int __stdcall recFunc(double arr[], int, int);
+    __declspec(dllexport) double __stdcall recFunc(double arr[], int, int);
 
 #ifdef __cplusplus
 }

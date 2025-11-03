@@ -3,10 +3,6 @@
 #include <string>
 #include <windows.h>  // для LoadLibrary, GetProcAddress, FreeLibrary
 
-// Объявляем указатели на функции как глобальные переменные
-typedef double(__stdcall* RecFunc)(double[], int, int);
-RecFunc recFunc = nullptr;
-
 void checkInputChoice(int& choice) {
     while (true) {
         std::cout << "Start?\n1.YES\n2.EXIT\n3.Show menu\n";
@@ -30,7 +26,7 @@ void checkInputChoice(int& choice) {
     }
 }
 
-void checkInputIntK(int& k){
+void checkInputIntK(int& k) {
     while (true) {
         std::string line;
         if (!std::getline(std::cin, line)) {
@@ -51,6 +47,22 @@ void checkInputIntK(int& k){
     }
 }
 
+void checkInputArray(double& x) {
+    while (true) {
+        std::string line;
+        if (!std::getline(std::cin, line)) {
+            std::cout << "Input error.\n";
+            continue;
+        }
+        std::stringstream ss(line);
+        if (ss >> x && ss.eof()) {
+            break;
+        } else {
+            std::cout << "Incorrect input.\n";
+        }
+    }
+}
+
 /*double recFunc(double arr[], int start, int end) {
     int n = end - start + 1;
     if (n == 1) return sin(arr[start]) - cos(arr[start]);
@@ -63,36 +75,39 @@ void checkInputIntK(int& k){
 
 void Task() {
     // 1. ЗАГРУЖАЕМ ДИНАМИЧЕСКУЮ БИБЛИОТЕКУ
-    HINSTANCE hDLL = LoadLibrary("RecDLL.dll");
-    if (hDLL == nullptr) {
+    HINSTANCE load;
+    load = LoadLibrary("RecDLL.dll");
+    if (load == nullptr) {
         std::cout << "Ошибка: не удалось загрузить RecDLL.dll!" << std::endl;
         return;
     }
 
     // 2. ОБЪЯВЛЯЕМ ТИПЫ УКАЗАТЕЛЕЙ НА ФУНКЦИИ ИЗ DLL
-    // Тип для функции recFunc
     typedef double (__stdcall *RecFunc)(double[], int, int);
 
     // 3. ПОЛУЧАЕМ УКАЗАТЕЛИ НА ФУНКЦИИ ИЗ DLL
-    auto recFunc = reinterpret_cast<RecFunc>(GetProcAddress(hDLL, "recFunc"));
+    RecFunc pRecFunc;
+    pRecFunc = (RecFunc)GetProcAddress(load, "recFunc");
 
     // Проверяем, что все функции найдены
-    if (recFunc == nullptr) {
+    if (pRecFunc == nullptr) {
         std::cout << "Ошибка: не удалось найти функции в библиотеке!" << std::endl;
-        FreeLibrary(hDLL);
+        FreeLibrary(load);
         return;
     }
 
     int n;
+    std::cout << "Enter amount of massive: ";
     checkInputIntK(n);
     double* arr = new double[n];
     for (int i = 0; i < n; i++) {
-        std::cin >> arr[i];
+        std::cout << "Enter a" << i << ": ";
+        checkInputArray(arr[i]);
     }
-    std::cout << recFunc(arr, 0, n - 1) << std::endl;
+    std::cout << pRecFunc(arr, 0, n - 1) << std::endl;
 
     // 5. ВЫГРУЖАЕМ БИБЛИОТЕКУ ИЗ ПАМЯТИ
-    FreeLibrary(hDLL);
+    FreeLibrary(load);
 }
 
 void Menu() {
