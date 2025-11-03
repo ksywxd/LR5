@@ -121,24 +121,27 @@ void printInitial(int** arr, int m, int n) {
 
 void Task() {
     // 1. ЗАГРУЖАЕМ ДИНАМИЧЕСКУЮ БИБЛИОТЕКУ
-    HINSTANCE hDLL = LoadLibrary("MatrixDLL.dll");
-    if (hDLL == nullptr) {
+    HINSTANCE load;
+    load = LoadLibrary("MatrixDLL.dll");
+    if (load == nullptr) {
         std::cout << "Ошибка: не удалось загрузить MatrixDLL.dll!" << std::endl;
         return;
     }
 
     // 2. ОБЪЯВЛЯЕМ ТИПЫ УКАЗАТЕЛЕЙ НА ФУНКЦИИ ИЗ DLL ЛОКАЛЬНО
-    typedef int*(__stdcall* FindELFunc)(int**, int, int, int&);
-    typedef int(__stdcall* MultiplyFunc)(int*, int);
+    typedef int*(__stdcall *FindELFunc)(int**, int, int, int&);
+    typedef int(__stdcall *MultiplyFunc)(int*, int);
 
     // 3. ПОЛУЧАЕМ УКАЗАТЕЛИ НА ФУНКЦИИ ИЗ DLL
-    auto pFindElOnD = (FindELFunc)GetProcAddress(hDLL, "findElOnD");
-    auto pMultiply = (MultiplyFunc)GetProcAddress(hDLL, "multiply");
+    FindELFunc pFindElOnD;
+    pFindElOnD = (FindELFunc)GetProcAddress(load, "findElOnD");
+    MultiplyFunc pMultiply;
+    pMultiply = (MultiplyFunc)GetProcAddress(load, "multiply");
 
     // Проверяем, что все функции найдены
     if (pFindElOnD == nullptr || pMultiply == nullptr) {
         std::cout << "Ошибка: не удалось найти функции в библиотеке!" << std::endl;
-        FreeLibrary(hDLL);
+        FreeLibrary(load);
         return;
     }
 
@@ -169,7 +172,7 @@ void Task() {
     }
 
     // 5. ВЫГРУЖАЕМ БИБЛИОТЕКУ ИЗ ПАМЯТИ
-    FreeLibrary(hDLL);
+    FreeLibrary(load);
 }
 
 void Menu() {

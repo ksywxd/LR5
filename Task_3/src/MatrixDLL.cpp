@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <iostream>
 
-int* findElOnD(int** arr, int n, int k, int& count) {
+int*  __stdcall findElOnD(int** arr, int n, int k, int& count) {
     int diagSize = std::min(n, k);
     for (int i = 0; i < diagSize; i++) {
         if (arr[i][i] % 2 == 0) {
@@ -26,7 +26,7 @@ int* findElOnD(int** arr, int n, int k, int& count) {
     }
 }
 
-int multiply(int* onD, int count) {
+int __stdcall multiply(int* onD, int count) {
     int res = 1;
     for (int i = 0; i < count; i++) {
         res *= onD[i];
