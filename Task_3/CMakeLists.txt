@@ -3,6 +3,18 @@ project(Task_3)
 
 include_directories(include)
 
-# Создаем исполняемый файл
+#основная программа
 add_executable(Task_3
-        src/Task_3.cpp)
+        src/Task_3.cpp
+        src/testfunc.cpp)
+
+#тесты
+add_executable(Task_3_Tests
+        tests/test.cpp
+        src/testfunc.cpp
+)
+
+#заголовки
+#target_include_directories(Task_3 PRIVATE Task_1/include)
+target_include_directories(Task_3_Tests PRIVATE Task_1/include)
+target_link_libraries(Task_3_Tests gtest gtest_main)
