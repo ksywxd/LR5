@@ -111,7 +111,7 @@ void Task() {
 }
 
 void Menu() {
-    std::cout << "\tTask 5\n";
+    std::cout << "\tTask 2\n";
     std::cout << "\tVariant 9\n";
     std::cout << "С помощью рекусивной функции вычисляется произведение\n"
                  "для заданного количества множителей по формуле\n"
