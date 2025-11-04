@@ -176,7 +176,7 @@ void Task() {
 }
 
 void Menu() {
-    std::cout << "\tTask 5\n";
+    std::cout << "\tTask 3\n";
     std::cout << "Выводятся четные элементы, расположенные на главной диагонали\n"
                  "и их произведение\n" << std::endl;
     std::cout << "Creator: Kseniya Siamionava\n" << std::endl;
