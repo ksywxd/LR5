@@ -68,7 +68,7 @@ void Task() {
     HINSTANCE load;
     load = LoadLibrary("RecDLL.dll");
     if (load == nullptr) {
-        std::cout << "Ошибка: не удалось загрузить RecDLL.dll!" << std::endl;
+        std::cout << "Error: Failed to load RecDLL.dll!" << std::endl;
         return;
     }
 
@@ -81,7 +81,7 @@ void Task() {
 
     // Проверяем, что все функции найдены
     if (pRecFunc == nullptr) {
-        std::cout << "Ошибка: не удалось найти функции в библиотеке!" << std::endl;
+        std::cout << "Error: Could not find functions in the library!" << std::endl;
         FreeLibrary(load);
         return;
     }
