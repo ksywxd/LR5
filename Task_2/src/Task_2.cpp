@@ -103,8 +103,8 @@ void Task() {
 void Menu() {
     std::cout << "\tTask 2\n";
     std::cout << "\tVariant 9\n";
-    std::cout << "С помощью рекусивной функции вычисляется произведение\n"
-                 "для заданного количества множителей по формуле\n"
+    std::cout << "The number of factors is specified.\n"
+                 "Using a recursive function, the code calculates the product of factors using the formula:\n"
                  "sinCi - cosCi\n" << std::endl;
     std::cout << "Creator: Kseniya Siamionava\n" << std::endl;
 }
