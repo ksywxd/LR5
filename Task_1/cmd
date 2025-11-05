@@ -1,0 +1,8 @@
+g++ -c src/task1lib.cpp -Iinclude -o build/task1lib.o
+
+ar rcs build/libtask1.a build/task1lib.o
+
+
+
+
+
