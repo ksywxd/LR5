@@ -83,7 +83,7 @@ void Task() {
     HINSTANCE load;
     load = LoadLibrary("MatrixDLL.dll");
     if (load == nullptr) {
-        std::cout << "Ошибка: не удалось загрузить MatrixDLL.dll!" << std::endl;
+        std::cout << "Error: Failed to load MatrixDLL.dll!" << std::endl;
         return;
     }
 
@@ -117,7 +117,7 @@ void Task() {
     // Проверяем, что все функции найдены
     if (pCount == nullptr || pFill == nullptr || pAverage == nullptr ||
         pPrintInitial == nullptr || pPrintDynamic == nullptr || pFreeArr == nullptr) {
-        std::cout << "Ошибка: не удалось найти функции в библиотеке!" << std::endl;
+        std::cout << "Error: Could not find functions in the library!" << std::endl;
         FreeLibrary(load);
         return;
     }
