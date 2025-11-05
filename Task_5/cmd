@@ -1,0 +1,3 @@
+g++ -shared -Iinclude -o build/MatrixDLL.dll src/MatrixDLL.cpp
+
+g++ -Iinclude -o build/Task_5 src/Task_5.cpp
