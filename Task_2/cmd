@@ -1,0 +1,3 @@
+g++ -shared -Iinclude -o build/RecDLL.dll src/RecDLL.cpp
+
+g++ -Iinclude -o Task_5 src/Task_5.cpp
