@@ -87,44 +87,12 @@ void printInitial(int** arr, int m, int n) {
     }
 }
 
-/*int* findElOnD(int** arr, int n, int k, int& count) {
-    int diagSize = std::min(n, k);
-    for (int i = 0; i < diagSize; i++) {
-        if (arr[i][i] % 2 == 0) {
-            count++;
-        }
-    }
-
-    if (count == 0) {
-        std::cout << "No even elements found on the main diagonal" << std::endl;
-        return nullptr;
-    }
-    else {
-        int* onD = new int[count];
-        int index = 0;
-        for (int i = 0; i < diagSize; i++) {
-            if (arr[i][i] % 2 == 0) {
-                onD[index++] = arr[i][i];
-            }
-        }
-        return onD;
-    }
-}*/
-
-/*int multiply(int* onD, int count) {
-    int res = 1;
-    for (int i = 0; i < count; i++) {
-        res *= onD[i];
-    }
-    return res;
-}*/
-
 void Task() {
     // 1. ЗАГРУЖАЕМ ДИНАМИЧЕСКУЮ БИБЛИОТЕКУ
     HINSTANCE load;
     load = LoadLibrary("MatrixDLL.dll");
     if (load == nullptr) {
-        std::cout << "Ошибка: не удалось загрузить MatrixDLL.dll!" << std::endl;
+        std::cout << "Error: Failed to load MatrixDLL.dll!" << std::endl;
         return;
     }
 
@@ -140,7 +108,7 @@ void Task() {
 
     // Проверяем, что все функции найдены
     if (pFindElOnD == nullptr || pMultiply == nullptr) {
-        std::cout << "Ошибка: не удалось найти функции в библиотеке!" << std::endl;
+        std::cout << "Error: Could not find functions in the library!" << std::endl;
         FreeLibrary(load);
         return;
     }
@@ -177,8 +145,8 @@ void Task() {
 
 void Menu() {
     std::cout << "\tTask 3\n";
-    std::cout << "Выводятся четные элементы, расположенные на главной диагонали\n"
-                 "и их произведение\n" << std::endl;
+    std::cout << "Even elements located on the main diagonal are displayed\n"
+                 "and their multiply\n" << std::endl;
     std::cout << "Creator: Kseniya Siamionava\n" << std::endl;
 }
 
