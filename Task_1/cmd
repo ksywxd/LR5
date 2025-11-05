@@ -6,3 +6,10 @@ ar rcs build/libtask1.a build/task1lib.o
 
 
 
+
+g++ src/Task_1.cpp -Iinclude -Lbuild -ltask1 -o build/Task_1.exe
+
+
+
+
+
