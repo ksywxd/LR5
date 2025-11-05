@@ -9,6 +9,9 @@ extern "C" {
     __declspec(dllexport) int __stdcall countEvenColumnOddNumber(int** arr, int m, int n);
     __declspec(dllexport) void __stdcall fillOut(int** arr, int* arr2, int m, int n);
     __declspec(dllexport) double __stdcall findAverage(int* arr, int count);
+    __declspec(dllexport) void __stdcall printInitial(int** arr, int m, int n);
+    __declspec(dllexport) void __stdcall printDynamic(int* arr, int count);
+    __declspec(dllexport) void __stdcall freeArr(int** arr, int m);
 
 #ifdef __cplusplus
 }
