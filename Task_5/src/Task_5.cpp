@@ -3,11 +3,6 @@
 #include <string>
 #include <windows.h>  // для LoadLibrary, GetProcAddress, FreeLibrary
 
-// Объявляем указатели на функции как глобальные переменные
-typedef int(__stdcall* CountFunc)(int**, int, int);
-typedef void(__stdcall* FillFunc)(int**, int*, int, int);
-typedef double(__stdcall* AverageFunc)(int*, int);
-
 void checkInputChoice(int& choice) {
     while (true) {
         std::cout << "Start?\n1.YES\n2.EXIT\n3.Show menu\n";
@@ -83,90 +78,47 @@ int** createMatrix(int m, int n) {
     return arr;
 }
 
-/*int countEvenColumnOddNumber(int** arr, int m, int n) {
-    int count = 0;
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (j % 2 != 0) {
-                if (arr[i][j] % 2 != 0)
-                count++;
-            }
-        }
-    }
-    return count;
-}*/
-
-/*void fillOut(int** arr, int* arr2, int m, int n) {
-    int index = 0;
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (j % 2 != 0) {
-                if (arr[i][j] % 2 != 0)
-                arr2[index++] = arr[i][j];
-            }
-        }
-    }
-}*/
-
-void printInitial(int** arr, int m, int n) {
-    for (int i = 0; i < m; i++){
-        for (int j = 0; j < n; j++){
-            std::cout << arr[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
-void printDynamic(int* arr, int count) {
-    for (int i = 0; i < count; i++) {
-        std::cout << arr[i] << " ";
-    }
-    std::cout << std::endl;
-}
-
-/*double findAverage(int* arr, int count) {
-    double sum = 0;
-    for (int i = 0; i < count; i++) {
-        sum += arr[i];
-    }
-    return sum / count;
-}*/
-
-void freeArr(int** arr, int m) {
-    for (int i = 0; i < m; i++) {
-        delete[] arr[i];
-    }
-    delete[] arr;
-
-}
-
 void Task() {
     // 1. ЗАГРУЖАЕМ ДИНАМИЧЕСКУЮ БИБЛИОТЕКУ
-    HINSTANCE hDLL = LoadLibrary("MatrixDLL.dll");
-    if (hDLL == nullptr) {
+    HINSTANCE load;
+    load = LoadLibrary("MatrixDLL.dll");
+    if (load == nullptr) {
         std::cout << "Ошибка: не удалось загрузить MatrixDLL.dll!" << std::endl;
         return;
     }
 
     // 2. ОБЪЯВЛЯЕМ ТИПЫ УКАЗАТЕЛЕЙ НА ФУНКЦИИ ИЗ DLL
-    // Тип для функции countEvenColumnOddNumber
-    typedef int (__stdcall *CountFunc)(int**, int, int);
-
-    // Тип для функции fillOut
-    typedef void (__stdcall *FillFunc)(int**, int*, int, int);
-
-    // Тип для функции findAverage
-    typedef double (__stdcall *AverageFunc)(int*, int);
+    typedef int (__stdcall *CountF)(int**, int, int);
+    typedef void (__stdcall *FillF)(int**, int*, int, int);
+    typedef double (__stdcall *AverageF)(int*, int);
+    typedef void (__stdcall *PrintInitialF)(int** arr, int m, int n);
+    typedef void (__stdcall *PrintDynamicF)(int* arr, int count);
+    typedef void (__stdcall *FreeArrF)(int** arr, int m);
 
     // 3. ПОЛУЧАЕМ УКАЗАТЕЛИ НА ФУНКЦИИ ИЗ DLL
-    auto countEvenColumnOddNumber = reinterpret_cast<CountFunc>(GetProcAddress(hDLL, "countEvenColumnOddNumber"));
-    auto fillOut = reinterpret_cast<FillFunc>(GetProcAddress(hDLL, "fillOut"));
-    auto findAverage = reinterpret_cast<AverageFunc>(GetProcAddress(hDLL, "findAverage"));
+    CountF pCount;
+    pCount = (CountF)GetProcAddress(load, "countEvenColumnOddNumber");
+
+    FillF pFill;
+    pFill = (FillF)GetProcAddress(load, "fillOut");
+
+    AverageF pAverage;
+    pAverage = (AverageF)GetProcAddress(load, "findAverage");
+
+    PrintInitialF pPrintInitial;
+    pPrintInitial = (PrintInitialF)GetProcAddress(load, "printInitial");
+
+    PrintDynamicF pPrintDynamic;
+    pPrintDynamic = (PrintDynamicF)GetProcAddress(load, "printDynamic");
+
+    FreeArrF pFreeArr;
+    pFreeArr = (FreeArrF)GetProcAddress(load, "freeArr");
 
     // Проверяем, что все функции найдены
-    if (countEvenColumnOddNumber == nullptr || fillOut == nullptr || findAverage == nullptr) {
+    if (pCount == nullptr || pFill == nullptr || pAverage == nullptr ||
+        pPrintInitial == nullptr || pPrintDynamic == nullptr || pFreeArr == nullptr) {
         std::cout << "Ошибка: не удалось найти функции в библиотеке!" << std::endl;
-        FreeLibrary(hDLL);
+        FreeLibrary(load);
         return;
     }
 
@@ -178,29 +130,29 @@ void Task() {
 
     int** arr = createMatrix(m, n);
     std::cout << "Initial massive:" << std::endl;
-    printInitial(arr, m, n);
+    pPrintInitial(arr, m, n);
 
-    int count = countEvenColumnOddNumber(arr, m, n);
+    int count = pCount(arr, m, n);
 
     if (count != 0) {
         int* evenColumnOddNumberArr = new int[count];
-        fillOut(arr, evenColumnOddNumberArr, m, n);
+        pFill(arr, evenColumnOddNumberArr, m, n);
 
-        freeArr(arr, m);
+        pFreeArr(arr, m);
 
         std::cout << "Odd numbers in even columns:" << std::endl;
-        printDynamic(evenColumnOddNumberArr, count);
+        pPrintDynamic(evenColumnOddNumberArr, count);
 
-        std::cout << "Arithmetic mean: " << findAverage(evenColumnOddNumberArr, count) << std::endl;
+        std::cout << "Arithmetical mean: " << pAverage(evenColumnOddNumberArr, count) << std::endl;
 
         delete[] evenColumnOddNumberArr;
     } else {
-        freeArr(arr, m);
+        pFreeArr(arr, m);
         std::cout << "No such numbers" << std::endl;
     }
 
     // 5. ВЫГРУЖАЕМ БИБЛИОТЕКУ ИЗ ПАМЯТИ
-    FreeLibrary(hDLL);
+    FreeLibrary(load);
 }
 
 void Menu() {
