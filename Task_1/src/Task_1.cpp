@@ -50,7 +50,7 @@ void checkInputIntK(int& k){
 void Menu() {
     std::cout << "\tTask 1\n";
     std::cout << "\tVariant 9\n" << std::endl;
-    std::cout << "A matrix of size n×n is formed.\n"
+    std::cout << "A matrix of size NxN is formed.\n"
     "The elements are determined as follows:\n"
     "If i<=5: a[i][j] = 2ij^2 - 2j\n"
     "If i > 5: 3ij - 3\n"
