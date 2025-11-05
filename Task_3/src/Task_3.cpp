@@ -145,8 +145,7 @@ void Task() {
 
 void Menu() {
     std::cout << "\tTask 3\n";
-    std::cout << "Even elements located on the main diagonal are displayed\n"
-                 "and their multiply\n" << std::endl;
+    std::cout << "Even elements located on the main diagonal and their multiply are displayed\n" << std::endl;
     std::cout << "Creator: Kseniya Siamionava\n" << std::endl;
 }
 
