@@ -78,85 +78,12 @@ double** createMatrix(int m, int n) {
     return arr;
 }
 
-/*void findIndex(int* arrI, int* arrJ, double** arr, int m, int n) {
-    int indexI = 0;
-    int indexJ = 0;
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (arr[i][j] == 0) {
-                arrI[indexI++] = i;
-                arrJ[indexJ++] = j;
-            }
-        }
-    }
-}
-
-double* fillOut(double** arr, int m, int n) {
-    double* lineArr = new double[n * m];
-    int k = 0;
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            lineArr[k++] = arr[i][j];
-        }
-    }
-    return lineArr;
-}
-
-int findZero(double** arr, int m, int n) {
-    int countZero = 0;
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (arr[i][j] == 0) countZero++;
-        }
-    }
-    return countZero;
-}
-
-void printPosZero(int* arrI, int* arrJ, int countZero) {
-    std::cout << "Zero positions: ";
-    for (int i = 0; i < countZero; i++) {
-        std::cout << "[" << arrI[i] << ";" << arrJ[i] << "]" << " ";
-    }
-    std::cout << std::endl;
-}
-
-void printReverseMatrix(double** reverseArr, int n, int m) {
-    std::cout << "Reverse matrix:" << std::endl;
-    for (int i = 0; i < m; i++){
-        for (int j = 0; j < n; j++){
-            std::cout << reverseArr[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-}
-
-double** reverse(double* lineArr, int m, int n) {
-    double** reverseArr = new double*[m];
-    int k = m * n;
-    for (int i = 0; i < m; i++) {
-        reverseArr[i] = new double[n];
-    }
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            reverseArr[i][j] = lineArr[--k];
-        }
-    }
-    return reverseArr;
-}
-
-void freeArr(double** arr, int m) {
-    for (int i = 0; i < m; i++) {
-        delete[] arr[i];
-    }
-    delete[] arr;
-}*/
-
 void Task() {
     // 1. ЗАГРУЖАЕМ ДИНАМИЧЕСКУЮ БИБЛИОТЕКУ
     HINSTANCE load;
     load = LoadLibrary("MatrixDLL.dll");
     if (load == nullptr) {
-        std::cout << "Ошибка: не удалось загрузить MatrixDLL.dll!" << std::endl;
+        std::cout << "Error: Failed to load MatrixDLL.dll!" << std::endl;
         return;
     }
 
@@ -195,7 +122,7 @@ void Task() {
     if (pFindIndex == nullptr || pFillOut == nullptr || pFindZero == nullptr ||
         pPrintPosZero == nullptr || pPrintReverseMatrix == nullptr ||
         pReverse == nullptr || pFreeArr == nullptr) {
-        std::cout << "Ошибка: не удалось найти функции в библиотеке!" << std::endl;
+        std::cout << "Error: Could not find functions in the library!" << std::endl;
         FreeLibrary(load);
         return;
     }
@@ -231,8 +158,8 @@ void Task() {
 
 void Menu() {
     std::cout << "\tTask 4\n";
-    std::cout << "Находятся нули в матрице и выводятся на экран.\n"
-                 "Выводится матрица с элементами в обратном порядке\n" << std::endl;
+    std::cout << "Zeros are found in the matrix and displayed on the screen.\n"
+                 "The matrix is output with the elements in reverse order.\n" << std::endl;
     std::cout << "Creator: Kseniya Siamionava\n" << std::endl;
 }
 
