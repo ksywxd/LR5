@@ -15,5 +15,5 @@ add_executable(Task_4_Tests
 )
 
 #заголовки
-target_include_directories(Task_4_Tests PRIVATE Task_2/include)
+target_include_directories(Task_4_Tests PRIVATE Task_4/include)
 target_link_libraries(Task_4_Tests gtest gtest_main)
